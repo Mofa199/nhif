@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SJUCHAS SO - NHIF Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#1e40af',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth transitions for view switching */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #3498db;
+            width: 20px;
+            height: 20px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <!-- LOGO PLACEMENT START -->
+                <!-- Replace the src below with your actual logo URL -->
+                <div class="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm">
+                    <img src="/NEWSAJUHESO.png" alt="Organization Logo" class="h-full w-full object-cover">
+                </div>
+                <!-- LOGO PLACEMENT END -->
+                
+                <div class="hidden md:block">
+                    <h1 class="font-bold text-gray-900 text-lg leading-tight">SJUCHAS Students Organization</h1>
+                    <p class="text-xs text-blue-600 font-bold uppercase tracking-wide">Ministry of Health - NHIF System</p>
+                </div>
+                <!-- Mobile truncated view -->
+                <div class="md:hidden">
+                    <h1 class="font-bold text-gray-900 text-sm">SJUCHAS SO - MoH</h1>
+                    <p class="text-xs text-blue-600 font-bold uppercase">NHIF System</p>
+                </div>
+            </div>
+
+            <button onclick="showPage('home')" class="text-sm text-gray-500 hover:text-blue-600 transition flex items-center gap-2 border px-3 py-1.5 rounded-full hover:bg-gray-50">
+                <i class="fas fa-home"></i> <span class="hidden sm:inline">Home</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow p-4 md:p-8">
+        
+        <!-- Notification Area -->
+        <div id="notification" class="hidden fixed top-24 right-4 max-w-sm bg-white border-l-4 p-4 rounded shadow-lg z-50 transform transition-all duration-300 translate-x-full">
+            <div class="flex items-start">
+                <div class="flex-shrink-0" id="notif-icon">
+                    <!-- Icon injected via JS -->
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium" id="notif-title">Success</p>
+                    <p class="text-sm text-gray-500 mt-1" id="notif-message">Message body</p>
+                </div>
+                <button onclick="closeNotification()" class="ml-auto pl-3 text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- PAGE 1: HOME -->
+        <div id="home-page" class="fade-in max-w-4xl mx-auto mt-8">
+            <div class="text-center mb-12">
+                <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">NHIF Registration Portal</span>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Welcome to the Portal</h1>
+                <p class="text-gray-600 text-lg max-w-2xl mx-auto">Please select your registration category below to proceed with the NHIF data capture process.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- New Member Card -->
+                <div onclick="showPage('new-member')" class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer p-8 border border-gray-100 group transform hover:-translate-y-1">
+                    <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-3 text-gray-800">New Registration</h2>
+                    <p class="text-gray-500 mb-6">For First Year students or new members registering for NHIF for the first time.</p>
+                    <span class="text-primary font-semibold group-hover:underline flex items-center gap-2">Start Registration <i class="fas fa-arrow-right text-sm"></i></span>
+                </div>
+
+                <!-- Continuing Member Card -->
+                <div onclick="showPage('continuing-member')" class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all cursor-pointer p-8 border border-gray-100 group transform hover:-translate-y-1">
+                    <div class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center text-green-600 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-3 text-gray-800">Continuing Students</h2>
+                    <p class="text-gray-500 mb-6">For continuing students needing to update their status or renew details.</p>
+                    <span class="text-green-600 font-semibold group-hover:underline flex items-center gap-2">Proceed to Form <i class="fas fa-arrow-right text-sm"></i></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: NEW MEMBER FORM -->
+        <div id="new-member-page" class="hidden fade-in max-w-3xl mx-auto bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+            <div class="bg-blue-600 px-6 py-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-white font-bold text-lg"><i class="fas fa-file-medical mr-2"></i>New NHIF Registration</h2>
+                    <p class="text-blue-100 text-xs">Fill in all required fields accurately</p>
+                </div>
+                <button onclick="showPage('home')" class="text-blue-100 hover:text-white text-sm bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded transition"><i class="fas fa-times mr-1"></i> Close</button>
+            </div>
+            
+            <form id="newMemberForm" class="p-6 md:p-8 space-y-6" onsubmit="submitData(event, 'newMemberForm')">
+                <input type="hidden" name="FormType" value="NewMember">
+                
+                <!-- Section 1: Identification -->
+                <div class="border-b border-gray-100 pb-6 mb-4">
+                    <h3 class="text-blue-600 font-bold mb-4 uppercase text-xs tracking-wider flex items-center gap-2">
+                        <span class="bg-blue-100 w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span> Identification
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Form Four Index No *</label>
+                            <input type="text" name="FormFourIndexNo" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-gray-50 focus:bg-white" placeholder="e.g. S1234/0001/2020">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">National ID / NIDA</label>
+                            <input type="text" name="NationalID" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition bg-gray-50 focus:bg-white" placeholder="XXX-XXX-XXX">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Personal Details -->
+                <div class="border-b border-gray-100 pb-6 mb-4">
+                    <h3 class="text-blue-600 font-bold mb-4 uppercase text-xs tracking-wider flex items-center gap-2">
+                         <span class="bg-blue-100 w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span> Personal Details
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                            <input type="text" name="FirstName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Middle Name</label>
+                            <input type="text" name="MiddleName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                            <input type="text" name="LastName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth *</label>
+                            <input type="date" name="DateOfBirth" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Gender *</label>
+                            <select name="Gender" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                     <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Marital Status</label>
+                            <select name="MaritalStatus" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                                <option value="Divorced">Divorced</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number *</label>
+                            <input type="tel" name="MobileNo" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white" placeholder="0xxxxxxxxx">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Academic Details -->
+                <div class="mb-4">
+                    <h3 class="text-blue-600 font-bold mb-4 uppercase text-xs tracking-wider flex items-center gap-2">
+                        <span class="bg-blue-100 w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span> Academic Information
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">College / Faculty *</label>
+                            <input type="text" name="CollegeFaculty" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                        </div>
+                         <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Course Name *</label>
+                            <input type="text" name="CourseName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Admission No</label>
+                            <input type="text" name="AdmissionNo" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Year of Study</label>
+                            <select name="YearOfStudy" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                                <option value="1">Year 1</option>
+                                <option value="2">Year 2</option>
+                                <option value="3">Year 3</option>
+                                <option value="4">Year 4</option>
+                                <option value="5+">Year 5+</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Duration (Years)</label>
+                            <input type="number" name="CourseDuration" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                        </div>
+                    </div>
+                     <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Admission Date</label>
+                        <input type="date" name="AdmissionDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-end">
+                    <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl transform active:scale-95">
+                        <span class="btn-text">Submit Registration</span>
+                        <div class="loader hidden"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- PAGE 3: CONTINUING MEMBER FORM -->
+        <div id="continuing-member-page" class="hidden fade-in max-w-lg mx-auto bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+            <div class="bg-green-600 px-6 py-4 flex justify-between items-center">
+                <div>
+                    <h2 class="text-white font-bold text-lg"><i class="fas fa-id-card mr-2"></i>Continuing Member</h2>
+                    <p class="text-green-100 text-xs">Update your NHIF Details</p>
+                </div>
+                <button onclick="showPage('home')" class="text-green-100 hover:text-white text-sm bg-green-700 hover:bg-green-800 px-3 py-1 rounded transition"><i class="fas fa-times mr-1"></i> Close</button>
+            </div>
+
+            <form id="continuingMemberForm" class="p-6 md:p-8 space-y-6" onsubmit="submitData(event, 'continuingMemberForm')">
+                <input type="hidden" name="FormType" value="ContinuingMember">
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                    <input type="text" name="FullName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none transition bg-gray-50 focus:bg-white" placeholder="Enter your full name">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Form Four Index No *</label>
+                    <input type="text" name="FormFourIndexNo" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none transition bg-gray-50 focus:bg-white" placeholder="S1234/0001/2020">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number *</label>
+                    <input type="tel" name="PhoneNumber" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none transition bg-gray-50 focus:bg-white" placeholder="0xxxxxxxxx">
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700 transition font-semibold flex justify-center items-center gap-2 shadow-lg hover:shadow-xl transform active:scale-95">
+                        <span class="btn-text">Update Info</span>
+                        <div class="loader hidden"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- Updated Footer with Branding -->
+    <footer class="bg-gray-800 text-white py-12 mt-12 border-t border-gray-700">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h3 class="font-bold text-lg mb-2">SJUCHAS Students Organization</h3>
+            <p class="text-gray-400 text-sm mb-6">Ministry of Health &middot; NHIF System</p>
+            
+            <div class="flex justify-center gap-4 mb-8">
+                <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-gray-400 hover:text-white transition"><i class="fas fa-globe"></i></a>
+            </div>
+
+            <div class="pt-6 border-t border-gray-700 text-xs text-gray-500">
+                <p>&copy; 2025 SJUCHAS SO. All rights reserved.</p>
+                <p class="mt-2">Designed and maintained by <span class="text-blue-400 font-bold tracking-wide">MOFAS</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // CONFIGURATION
+        // REPLACE THESE URLs WITH YOUR SPECIFIC GOOGLE APPS SCRIPT WEB APP URLs
+        const NEW_MEMBER_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbySv0uV4chuMNZptGDSwBu3eyyYIUQ6nv8jN6GIHOkAY0yA-nUXi_RKm2iMlXaqBpjmVw/exec"; 
+        const CONTINUING_MEMBER_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZ3rbHZSHnM_9eQD1p1nBFV6WwYhzilHdHyu4Cp_k7gW9kE7S-RKhIGQOc958ii29X2g/exec"; 
+
+        // --- Navigation Logic ---
+        function showPage(pageId) {
+            // Hide all pages
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('new-member-page').classList.add('hidden');
+            document.getElementById('continuing-member-page').classList.add('hidden');
+            
+            // Show requested page
+            const activePage = document.getElementById(pageId + '-page');
+            activePage.classList.remove('hidden');
+            
+            // Reset scroll
+            window.scrollTo(0, 0);
+        }
+
+        // --- Form Submission Logic ---
+        async function submitData(event, formId) {
+            event.preventDefault();
+            
+            const form = document.getElementById(formId);
+            const btn = form.querySelector('button[type="submit"]');
+            const btnText = btn.querySelector('.btn-text');
+            const loader = btn.querySelector('.loader');
+
+            // UI Loading State
+            btn.disabled = true;
+            btnText.classList.add('hidden');
+            loader.classList.remove('hidden');
+
+            const formData = new FormData(form);
+
+            // Determine which URL to use based on the form ID
+            let targetUrl = "";
+            if (formId === 'newMemberForm') {
+                targetUrl = NEW_MEMBER_SCRIPT_URL;
+            } else if (formId === 'continuingMemberForm') {
+                targetUrl = CONTINUING_MEMBER_SCRIPT_URL;
+            }
+
+            // Simulation Check (If the specific URL is empty)
+            if (!targetUrl) {
+                // Simulate network delay for demo
+                setTimeout(() => {
+                    handleResponse({ result: "success" }, form);
+                    showNotification('success', 'Simulation Mode', 'Data logged to console. Configure the specific Script URL to save to Sheets.');
+                    console.log(`Form (${formId}) Data Submitted:`, Object.fromEntries(formData));
+                    resetButton(btn, btnText, loader);
+                }, 1500);
+                return;
+            }
+
+            try {
+                const response = await fetch(targetUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                // Google Scripts sometimes return opaque responses depending on CORS
+                const result = await response.text(); 
+                
+                handleResponse(result, form);
+                showNotification('success', 'Submission Successful', 'Your details have been saved.');
+                
+            } catch (error) {
+                console.error('Error!', error.message);
+                showNotification('error', 'Submission Failed', 'Please check your internet connection.');
+            } finally {
+                resetButton(btn, btnText, loader);
+            }
+        }
+
+        function resetButton(btn, textSpan, loader) {
+            btn.disabled = false;
+            textSpan.classList.remove('hidden');
+            loader.classList.add('hidden');
+        }
+
+        function handleResponse(response, form) {
+            // Clear form on success
+            form.reset();
+            // Optionally redirect to home after 2 seconds
+            setTimeout(() => {
+                showPage('home');
+            }, 3000);
+        }
+
+        // --- Notification Logic ---
+        function showNotification(type, title, message) {
+            const notif = document.getElementById('notification');
+            const iconDiv = document.getElementById('notif-icon');
+            const titleEl = document.getElementById('notif-title');
+            const msgEl = document.getElementById('notif-message');
+
+            // Reset
+            notif.className = "hidden fixed top-24 right-4 max-w-sm bg-white border-l-4 p-4 rounded shadow-lg z-50 transform transition-all duration-300 translate-x-full";
+            
+            // Set content
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+
+            if (type === 'success') {
+                notif.classList.add('border-green-500');
+                iconDiv.innerHTML = '<i class="fas fa-check-circle text-green-500 text-xl"></i>';
+            } else {
+                notif.classList.add('border-red-500');
+                iconDiv.innerHTML = '<i class="fas fa-exclamation-circle text-red-500 text-xl"></i>';
+            }
+
+            // Show
+            notif.classList.remove('hidden');
+            // Trigger animation
+            setTimeout(() => {
+                notif.classList.remove('translate-x-full');
+            }, 10);
+
+            // Auto hide
+            setTimeout(closeNotification, 5000);
+        }
+
+        function closeNotification() {
+            const notif = document.getElementById('notification');
+            notif.classList.add('translate-x-full');
+            setTimeout(() => {
+                notif.classList.add('hidden');
+            }, 300);
+        }
+    </script>
+</body>
+</html>
