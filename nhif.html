@@ -26,16 +26,18 @@
             width: 20px; height: 20px; animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Custom Invalid Style */
+        input:invalid, select:invalid { border-color: #ef4444; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans min-h-screen flex flex-col">
 
-    <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-4">
                 <div class="h-12 w-12 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm">
-                    <img src="images/NEWSAJUHESO.png" alt="Organization Logo" class="h-full w-full object-cover">
+                    <img src="images/NEWSAJUHESO.png" alt="Logo" class="h-full w-full object-cover">
                 </div>
                 <div class="hidden md:block">
                     <h1 class="font-bold text-gray-900 text-lg leading-tight">SJUCHAS Students Organization</h1>
@@ -57,10 +59,8 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main class="flex-grow p-4 md:p-8">
         
-        <!-- Notification Area -->
         <div id="notification" class="hidden fixed top-24 right-4 max-w-sm bg-white border-l-4 p-4 rounded shadow-lg z-50 transform transition-all duration-300 translate-x-full">
             <div class="flex items-start">
                 <div class="flex-shrink-0" id="notif-icon"></div>
@@ -72,7 +72,6 @@
             </div>
         </div>
 
-        <!-- PAGE 1: HOME -->
         <div id="home-page" class="fade-in max-w-4xl mx-auto mt-8">
             <div class="text-center mb-12">
                 <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">NHIF Registration Portal</span>
@@ -93,13 +92,8 @@
                     <span class="text-green-600 font-semibold group-hover:underline flex items-center gap-2">Proceed to Form <i class="fas fa-arrow-right text-sm"></i></span>
                 </div>
             </div>
-            
-             <div class="text-center">
-                <p class="text-gray-500 text-sm">Already submitted? <button onclick="showPage('status-check')" class="text-blue-600 font-bold underline">Check or Edit your status here</button></p>
-            </div>
         </div>
 
-        <!-- PAGE: STATUS CHECK -->
         <div id="status-check-page" class="hidden fade-in max-w-xl mx-auto bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden mt-8">
             <div class="bg-yellow-500 px-6 py-4 flex justify-between items-center">
                 <h2 class="text-white font-bold text-lg"><i class="fas fa-search mr-2"></i>Verify & Edit</h2>
@@ -126,14 +120,11 @@
                     </button>
                 </form>
 
-                <!-- Status Result Display -->
                 <div id="statusResult" class="hidden mt-6 p-4 rounded-lg text-center border">
-                    <!-- JS injects content here -->
-                </div>
+                    </div>
             </div>
         </div>
 
-        <!-- PAGE 2: NEW MEMBER FORM -->
         <div id="new-member-page" class="hidden fade-in max-w-3xl mx-auto bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
             <div class="bg-blue-600 px-6 py-4 flex justify-between items-center">
                 <h2 class="text-white font-bold text-lg"><i class="fas fa-file-medical mr-2"></i>New NHIF Registration</h2>
@@ -148,13 +139,17 @@
                     </h3>
                     <div class="grid md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Form Four Index No (S0000/0000/2000)
-</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Form Four Index No (S0000/0000/2000)</label>
                             <input type="text" name="FormFourIndexNo" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">National ID / NIDA</label>
-                            <input type="text" name="NationalID" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">National ID / NIDA (20 Digits)</label>
+                            <input type="text" name="NationalID" required 
+                                   minlength="20" maxlength="20" pattern="\d{20}" 
+                                   title="Please enter exactly 20 digits"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white" 
+                                   placeholder="00000000000000000000">
                         </div>
                     </div>
                 </div>
@@ -201,8 +196,13 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number *</label>
-                            <input type="tel" name="MobileNo" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Mobile Number (10 Digits) *</label>
+                            <input type="tel" name="MobileNo" required 
+                                   minlength="10" maxlength="10" pattern="\d{10}"
+                                   title="Please enter exactly 10 digits"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white"
+                                   placeholder="07XXXXXXXX">
                         </div>
                     </div>
                 </div>
@@ -213,18 +213,27 @@
                     </h3>
                     <div class="grid md:grid-cols-2 gap-6 mb-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Faculty (Diploma/Degree)*</label>
-                            <input type="text" name="CollegeFaculty" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Faculty *</label>
+                            <select name="CollegeFaculty" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                                <option value="">Select Faculty</option>
+                                <option value="Diploma">Diploma</option>
+                                <option value="Degree">Degree</option>
+                            </select>
                         </div>
                          <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Course Name (ODP/PST/MD)*</label>
-                            <input type="text" name="CourseName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Course Name *</label>
+                            <select name="CourseName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                                <option value="">Select Course</option>
+                                <option value="MD">MD</option>
+                                <option value="ODP">ODP</option>
+                                <option value="ODN">ODN</option>
+                            </select>
                         </div>
                     </div>
                     <div class="grid md:grid-cols-3 gap-4 mb-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Admission No</label>
-                            <input type="text" name="AdmissionNo / REGISTRATION NO" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                            <input type="text" name="AdmissionNo" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Year of Study</label>
@@ -237,13 +246,13 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Duration (Years) 5 YEARS FOR MD AND 3 YEARS FOR DIPLOMA</label>
-                            <input type="number" name="CourseDuration" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Duration (Years)</label>
+                            <input type="number" name="CourseDuration" placeholder="3 or 5" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
                         </div>
                     </div>
                      <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Admission Date</label>
-                        <input type="date" name="AdmissionDate (first admission date at SJUCHAS) example for 5th year it is 10th november 2021" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
+                        <input type="date" name="AdmissionDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-gray-50 focus:bg-white">
                     </div>
                 </div>
 
@@ -256,7 +265,6 @@
             </form>
         </div>
 
-        <!-- PAGE 3: CONTINUING MEMBER FORM -->
         <div id="continuing-member-page" class="hidden fade-in max-w-lg mx-auto bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
             <div class="bg-green-600 px-6 py-4 flex justify-between items-center">
                 <h2 class="text-white font-bold text-lg"><i class="fas fa-id-card mr-2"></i>Continuing Member</h2>
@@ -272,7 +280,7 @@
                 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Form 4 Index No (S0000/0000/2000)*</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Form 4 Index No *</label>
                         <input type="text" name="FormFourIndexNo" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none bg-gray-50 focus:bg-white">
                     </div>
                     <div>
@@ -288,13 +296,22 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">National ID (NIDA)</label>
-                    <input type="text" name="NationalID" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none bg-gray-50 focus:bg-white" placeholder="XXX-XXX-XXX">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">National ID / NIDA (20 Digits)</label>
+                    <input type="text" name="NationalID" 
+                           minlength="20" maxlength="20" pattern="\d{20}"
+                           title="Please enter exactly 20 digits"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none bg-gray-50 focus:bg-white" 
+                           placeholder="00000000000000000000">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number (registered with NHIF)*</label>
-                    <input type="tel" name="PhoneNumber" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none bg-gray-50 focus:bg-white">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number (10 Digits)*</label>
+                    <input type="tel" name="PhoneNumber" required 
+                           minlength="10" maxlength="10" pattern="\d{10}"
+                           title="Please enter exactly 10 digits"
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none bg-gray-50 focus:bg-white">
                 </div>
                 
                 <div class="pt-4">
@@ -324,7 +341,7 @@
     </footer>
 
     <script>
-        // CONFIGURATION
+        // CONFIGURATION - PASTE YOUR GOOGLE SCRIPT URLS HERE
         const NEW_MEMBER_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbySv0uV4chuMNZptGDSwBu3eyyYIUQ6nv8jN6GIHOkAY0yA-nUXi_RKm2iMlXaqBpjmVw/exec"; 
         const CONTINUING_MEMBER_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzZ3rbHZSHnM_9eQD1p1nBFV6WwYhzilHdHyu4Cp_k7gW9kE7S-RKhIGQOc958ii29X2g/exec"; 
 
@@ -416,7 +433,6 @@
             showPage(formId);
 
             // Populate inputs
-            // We loop through the data keys and find inputs with matching 'name' attributes
             for (const [key, value] of Object.entries(tempUserData)) {
                 const input = formEl.querySelector(`[name="${key}"]`);
                 if (input) {
@@ -512,5 +528,3 @@
     </script>
 </body>
 </html>
-
-
